@@ -7,11 +7,12 @@ ptrAdd.c                                                                        
     printing strings pointed to by pointer, and pointer addition.  Input data is string data.
 
     cc ptrAdd.c
-    ./a.out  < datafile.txt
+    ./a.out  < wordsdata.txt
 
     datafile.txt should contain ascii characters where each record (row) has no more than 5 characters.
     The datafile can have fewer than 100 rows but no more than 100 rows (0-99) will be read.
-
+    Caution: this program does not do input checking.  A row with more than 9 characters has the
+    potential to cause a buffer overflow and corrupt the data in memory (though not guaranteed.)
 
     by Clyde Hoadley July 5, 2021.
 ******************************************************************************************************/
@@ -20,9 +21,10 @@ ptrAdd.c                                                                        
 #include <strings.h>
 
 #define MAXINPUT 100
-#define MAXLENGTH 6
+#define MAXLENGTH 10
 
 void output(char *ptr, int x);  //forward declaration.  Function will be defined after main.
+
 
 
 int main(void) {
@@ -60,10 +62,11 @@ int main(void) {
 } //end-main()
 
 
+
 void output(char *xptr, int x) {
 //  char *ptr points to the start of the allocated memory (i.e.  array[0][0] )
-//  could have defined char *ptr but want to demonstrate that this is a different pointer than in main.
-//  int x is the size (width) of 1 row of the array.  This is how much needs to be
+//  Could have defined char *ptr but want to demonstrate that this is a different pointer than in main.
+//  Int x is the size (width) of 1 row of the array; his is how much needs to be
 //  added to the pointer to advance it to the next row.
 
     for (int i=0; i<MAXINPUT; i++) {    //print the array to standard out.
