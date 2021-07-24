@@ -8,7 +8,7 @@ File list:
     Comma separated values data file of a maze for solving by rmaze.c  See the
     comments in rmaze.c
     
-    mergeSort
+    mergeSort.c
     This program is a C implementation of the merge sort algorithm described on
     pages 82-83 in the text "Algorithms in a Nutshell" 2nd Edition by Heineman,
     Pollice, and Selkow.
