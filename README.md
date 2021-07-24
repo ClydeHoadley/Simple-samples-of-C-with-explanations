@@ -4,6 +4,10 @@ Relearning C programming, algorithms and graphs, and creating simple documented 
 
 File list:
 
+    maze1.csv
+    Comma separated values data file of a maze for solving by rmaze.c  See the
+    comments in rmaze.c
+    
     mergeSort
     This program is a C implementation of the merge sort algorithm described on
     pages 82-83 in the text "Algorithms in a Nutshell" 2nd Edition by Heineman,
