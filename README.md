@@ -21,6 +21,13 @@ File list:
     onehundrednumbers.txt
     A datafile of 100 numbers 1-100 in random order left padded with leading zeros.
     
+    PaperDepthFirstMazeSolver.pdf
+    I decided to develop a program to solve a maze then use LaTex to write a paper
+    about what I learned.  I didn’t know at the time that this subject has been 
+    done to death on the Web and YouTube.  This paper is not intended to be a real
+    research paper but as a form of geeky play. I get to relearn some things I’ve 
+    forgotten, practice programming, and play with the LaTeX software.
+    
     ptrAdd.c
     Use only pointers to do array stuff.  Demonstrates allocating memory and pointers,
     reading string data into memory pointed to by pointer, pass pointer to a function,
