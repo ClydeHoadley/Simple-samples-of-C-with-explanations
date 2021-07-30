@@ -4,6 +4,13 @@ Relearning C programming, algorithms and graphs, and creating simple documented 
 
 File list:
 
+    iLinkedList.c
+    Demonstrate a linked list using integers.  The program was developed with the 
+    vision of some day  developing into a binary tree.  So, integers are linked & 
+    listed in descending order with larger numbers first and smaller numbers.  
+    This will be important when this program becomes the core of a binary tree 
+    program.  There is an identical program sLinkedList.c using strings.
+
     maze1.csv
     Comma separated values data file of a maze for solving by rmaze.c  See the
     comments in rmaze.c
@@ -37,6 +44,14 @@ File list:
     This program uses a recursive depth-first search algorithm to solve a maze.
     This C program was derived from a Python program written and demonstrated on YouTube
     by Richard West.
+    
+    sLinkedList.c
+     Demonstrate a linked list using strings.  The program was developed with the vision of 
+     some day developing into a binary tree.  So, strings are linked & listed in descending 
+     order with larger ASCII character values first and lower ASCII characters values on 
+     last.  (z-a) come before (Z-A).  This will be important when this program becomes the 
+     core of a binary tree program.  There is an identical program sLinkedList.c using 
+     strings.
     
     wordsdata.txt
     A datafile of 1 to 6 character unsorted words, all lower case, for use as an input file.
