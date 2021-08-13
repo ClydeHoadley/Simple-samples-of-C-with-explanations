@@ -34,6 +34,31 @@ loadWordTable.c                                                            11 Au
 
 
     by Clyde Hoadley
+*****************************************************************************************
+
+    Procedure:
+        1.  gather username and password then connect to the database
+        2.  get a statement pointer from the database
+        3.  open datafile for reading
+        4.  for each word fill in a statement structure one at a time
+        5.  associate (bind) the statement structure to the statement pointer
+        6.  tell the database to perform the statement.
+        7.  close files, statements, and connections when end of data file.
+
+*****************************************************************************************
+                    GNU General Public License v3.0
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 ****************************************************************************************/
 #include <stdio.h>
 #include <stdlib.h>
@@ -49,7 +74,6 @@ loadWordTable.c                                                            11 Au
 #define MAXWORDLENGTH 50
 
 
-
 void errorExit(char *string,FILE *fp, MYSQL *conn, MYSQL_STMT *stmt);
 void echo_off(struct termios *term_save);
 void echo_on(struct termios term_save);
@@ -58,8 +82,6 @@ bool readOneWord(FILE *file, char *word);
 bool insertOneWord(char *word, MYSQL_STMT *stmt);
 bool readAndInsertWords(MYSQL *connect, char *filename);
 int main(int argc, char *argv[]);
-
-
 
 
 /***************************************************************************************/
@@ -71,27 +93,6 @@ void errorExit(char *string,FILE *fp, MYSQL *conn, MYSQL_STMT *stmt) {
     exit(EXIT_FAILURE);
 }
 
-
-/***************************************************************************************/
-/*
-static void show_mysql_error(MYSQL *mysql) {
-    fprintf(stderr, "Error(%d) [%s] \"%s\"", mysql_errno(mysql),
-                                  mysql_sqlstate(mysql),
-                                  mysql_error(mysql));
-    exit(EXIT_FAILURE);
-}
-*/
-
-
-/***************************************************************************************/
-/*
-static void show_stmt_error(FILE *fp,MYSQL *conn, MYSQL_STMT *stmt) {
-    fprintf(stderr, "Error(%d) [%s] \"%s\"", mysql_stmt_errno(stmt),
-                                  mysql_stmt_sqlstate(stmt),
-                                  mysql_stmt_error(stmt));
-    errorExit("statement error exit",fp,conn,stmt);
-}
-*/
 
 /***************************************************************************************/
 void echo_off(struct termios *term_save) {
@@ -120,16 +121,16 @@ bool logonToDatabase(MYSQL **connect) {
     *connect=NULL;
     do {
         if ( ++tryCount > 3 ) return false;
-        bzero(username,20);
+        bzero(username,50);
         printf("\nUsername: ");
-        fgets(username,19,stdin);
+        fgets(username,49,stdin);
         l=strlen(username);
-        if ( !l ) return false;
+        if ( !l ) return false;                                //remove CR/LF
         if ( (username[l-1] < ' ') || (username[l-1] > '~') ) username[l-1]=0;
         if ( (username[l-2] < ' ') || (username[l-2] > '~') ) username[l-2]=0;
 
-        echo_off(&term_save);
-        bzero(password,50);
+        echo_off(&term_save);   //do not display password when entered
+        bzero(password,50);     //echo on/off might not work on all terminals
         printf("Password: ");
         fgets(password,49,stdin);
         l=strlen(password);
@@ -158,7 +159,7 @@ bool readOneWord(FILE *file, char *word) {
     fgets(word,MAXWORDLENGTH,file);
     l=strlen(word);
     if ( !l ) return false;
-    if ( (word[l-1] < ' ') || (word[l-1] > '~') ) word[l-1]=0;
+    if ( (word[l-1] < ' ') || (word[l-1] > '~') ) word[l-1]=0; // remove CR/LF
     if ( (word[l-2] < ' ') || (word[l-2] > '~') ) word[l-2]=0;
     //printf("(%d) %s (%d)",l,word,strlen(word));
     return true;
@@ -171,20 +172,20 @@ bool insertOneWord(char *word, MYSQL_STMT *stmt) {
     unsigned long wordLength;
     char id_ind[]= {STMT_INDICATOR_NULL, STMT_INDICATOR_NULL, STMT_INDICATOR_NULL};
 
-    char myInsertStatement[]="INSERT INTO words VALUES (?,?)";
+    char myInsertStatement[]="INSERT INTO words VALUES (?,?)"; //this is a template
     if (mysql_stmt_prepare(stmt, myInsertStatement, strlen(myInsertStatement))) {
         return false;
     }
 
-    memset(bind, 0, sizeof(MYSQL_BIND) * 2);
+    memset(bind, 0, sizeof(MYSQL_BIND) * 2);  //the DB table has 2 fields
 
     /* We autogenerate id's, so all indicators are STMT_INDICATOR_NULL */
-    bind[0].u.indicator=  id_ind;
-    bind[0].buffer_type= MYSQL_TYPE_LONG;
+    bind[0].u.indicator=  id_ind;          //field 1 is the id used as a key but it
+    bind[0].buffer_type= MYSQL_TYPE_LONG;  //will be automatically generated by the db
 
     wordLength = strlen(word);
     bind[1].buffer_type = MYSQL_TYPE_STRING;
-    bind[1].buffer = (char *)word;
+    bind[1].buffer = (char *)word;         //field 2 holds the word we are storing
     bind[1].buffer_length = wordLength;
     bind[1].length = &wordLength;
 
@@ -215,12 +216,12 @@ bool readAndInsertWords(MYSQL *connect, char *filename) {
         errorExit("Could not open file for reading.",NULL,connect,stmt);
     }
     printf("File %s opened for reading.\n",filename);
-    fflush(stdout);
     while (readOneWord(fp,word) ) {
         insertOneWord(word,stmt);
         ++rowCount;
     }
     printf("\nInserted %d rows.\n",rowCount);
+    fclose(fp);
     mysql_stmt_close(stmt);
     return true;
 }
