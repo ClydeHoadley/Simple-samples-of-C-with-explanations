@@ -11,6 +11,16 @@ File list:
     This will be important when this program becomes the core of a binary tree 
     program.  There is an identical program sLinkedList.c using strings.
 
+    loadWordTable.c
+    An example C program using the Maira/MySQL database and C api to demonstrate reading
+    an ascii data file of words (1 word per line) and storing each word into the database.
+    The program prompts the user for their MySQL username and password.  The MYSERVER
+    #define statement should be updated to point to the correct MySQL server.
+
+    loadWordTable.c is a companion program of readDBWords.c and readDBWordsSorted.c
+    readDBWordsSorted and readDBWords are identical except for the format of the SELECT
+    statement.
+
     maze1.csv
     Comma separated values data file of a maze for solving by rmaze.c  See the
     comments in rmaze.c
@@ -39,7 +49,13 @@ File list:
     Use only pointers to do array stuff.  Demonstrates allocating memory and pointers,
     reading string data into memory pointed to by pointer, pass pointer to a function,
     printing strings pointed to by pointer, and pointer addition.  Input data is string data.
+
+    readDBWords.c
+    See loadWordTable.c
     
+    readDBWordsSorted.c
+    See loadWordTable.c
+
     rmaze.c
     This program uses a recursive depth-first search algorithm to solve a maze.
     This C program was derived from a Python program written and demonstrated on YouTube
