@@ -23,6 +23,29 @@ readDBWords.c                                                              12 Au
 
 
     by Clyde Hoadley
+*****************************************************************************************
+
+    Procedure:
+        1.  Gather username/password and connect to the database
+        2.  Issue SQL query to database
+        3.  Get the whole result set back from the database
+        4.  While there are still results remaining, fetch a row and print.
+        5.  Free the result set and disconnect from (close) the database.
+
+*****************************************************************************************
+                    GNU General Public License v3.0
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 ****************************************************************************************/
 #include <stdio.h>
 #include <stdlib.h>
@@ -82,12 +105,12 @@ bool logonToDatabase(MYSQL **connect) {
 
     *connect=NULL;
     do {
-        if ( ++tryCount > 3 ) return false;
+        if ( ++tryCount > 3 ) return false;  //Three strikes and you're out.
         bzero(username,20);
         printf("\nUsername: ");
         fgets(username,19,stdin);
         l=strlen(username);
-        if ( !l ) return false;
+        if ( !l ) return false;                               // remove CR/LF
         if ( (username[l-1] < ' ') || (username[l-1] > '~') ) username[l-1]=0;
         if ( (username[l-2] < ' ') || (username[l-2] > '~') ) username[l-2]=0;
 
@@ -101,7 +124,7 @@ bool logonToDatabase(MYSQL **connect) {
         if ( (password[l-2] < ' ') || (password[l-2] > '~') ) password[l-2]=0;
         echo_on(term_save);
 
-        *connect= mysql_init(NULL);
+        *connect= mysql_init(NULL);  //initializes a MYSQL structure for connect to use
         if (connect == NULL) {
            errorExit("mysql_init() failed.",NULL,NULL,NULL);
         }
@@ -125,13 +148,13 @@ bool fetchWords(MYSQL *connect) {
         errorExit("Failed to select from table",NULL,connect,NULL);
     }
 
-    result = mysql_store_result(connect);
+    result = mysql_store_result(connect);  //this version returns the entire result set.
 
     if (result == NULL){
         errorExit("Failed to save results",NULL,connect,NULL);
     }
 
-    //num_fields = mysql_num_fields(result);
+    //num_fields = mysql_num_fields(result);  //tells how many fields are in one row.
 
     while ((row = mysql_fetch_row(result))){
         rowCount++;
