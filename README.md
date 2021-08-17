@@ -60,7 +60,10 @@ File list:
     This program uses a recursive depth-first search algorithm to solve a maze.
     This C program was derived from a Python program written and demonstrated on YouTube
     by Richard West.
-    
+
+    selectionSort.c
+    An working example of the selection sort.  It uses the wordsdata.txt file.
+
     sLinkedList.c
      Demonstrate a linked list using strings.  The program was developed with the vision of 
      some day developing into a binary tree.  So, strings are linked & listed in descending 
