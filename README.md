@@ -4,6 +4,10 @@ Relearning C programming, algorithms and graphs, and creating simple documented 
 
 File list:
 
+    bubbleSort.c
+    Demonstrate the classic bubble sort algorithm on a list of 100 unique random
+    words.
+    
     iLinkedList.c
     Demonstrate a linked list using integers.  The program was developed with the 
     vision of some day  developing into a binary tree.  So, integers are linked & 
