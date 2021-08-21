@@ -8,6 +8,14 @@ File list:
     Demonstrate the classic bubble sort algorithm on a list of 100 unique random
     words.
     
+    i2c_stoplight.ino
+    Slave I2C program for the Arduino to switch LED's on and off as instructed
+    by the master I2C program running on the Raspberry Pi.
+    
+    i2c_sysfs_stoplight.c
+    Master I2C program for the Raspberry to instruct the Arduion via i2c which
+    LED's to turn on and off.  No extra libraries or header files needed.
+    
     iLinkedList.c
     Demonstrate a linked list using integers.  The program was developed with the 
     vision of some day  developing into a binary tree.  So, integers are linked & 
