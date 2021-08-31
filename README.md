@@ -62,6 +62,13 @@ File list:
     reading string data into memory pointed to by pointer, pass pointer to a function,
     printing strings pointed to by pointer, and pointer addition.  Input data is string data.
 
+    quicksort.c
+    This program demonstrates the quick sort algorithm.  The quick sort is nearly identical to the
+    merge sort in that the list to be sorted is repeatedly divided into smaller and smaller lists
+    until there is nothing left to sort.  This makes it ideal for recursion.  Unlike merge sort
+    the smaller lists do not need to be merged back together since the records are swapped in-place
+    and there is no copying of lists.
+    
     readDBWords.c
     See loadWordTable.c
     
